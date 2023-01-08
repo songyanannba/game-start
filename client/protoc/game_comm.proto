@@ -24,5 +24,7 @@ message netMessage {
 
 
 message gameMessage {
-
+  string to =1;
+  string do =2;
+  string todo =3;
 }
