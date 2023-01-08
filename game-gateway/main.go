@@ -1,14 +1,20 @@
 package main
 
-import "game-gateway/api"
+import (
+	"fmt"
+	"game-gateway/api"
+)
 
 func main() {
+
+	fmt.Println("start")
 
 	initMain()
 
 	newApi := api.NewApi()
 
-	newApi.Run()
+	fmt.Println("123435657890")
+	newApi.Run("127.0.0.1:8765")
 }
 
 func initMain() {

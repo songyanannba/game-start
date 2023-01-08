@@ -2,7 +2,8 @@ package api
 
 import (
 	"fmt"
-	"game-gateway/connect"
+	"game-gateway/service"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,11 +12,12 @@ func NewApi() *gin.Engine {
 
 	echoRouter := engine.Group("/ktpd")
 	{
-		echoRouter.GET("/hello" , func(context *gin.Context) {
+
+		echoRouter.GET("/room", service.RoomGameConn)
+
+		echoRouter.GET("/hello", func(context *gin.Context) {
 			fmt.Println("world")
 		})
-		echoRouter.POST("room:channel" ,connect.RoomGameConn)
-
 
 	}
 

@@ -14,6 +14,7 @@ func main() {
 
 	service.CommonService.Start()
 	service.CliHandler.Start()
+
 	service.WsClientService.Start()
 
 	fmt.Println("启动成功。。。")

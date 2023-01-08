@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"sync"
+	"time"
 )
 
 type wsClientService struct {
@@ -29,22 +30,26 @@ func (ws *wsClientService) Start() {
 	u := url.URL{
 		Scheme: "ws",
 		Host:   conf.HOST,
-		Path:   conf.PORT,
+		Path:   conf.PATH,
 	}
 	s := u.String()
 
 	fmt.Println("url str == ", s)
 
 	conn, _, err := websocket.DefaultDialer.Dial(s, nil)
+	defer conn.Close()
+
 	ws.conn = conn
 	if err != nil {
 		fmt.Println("ws dail 服务拨号失败 = ", err)
 		return
 	}
-	go ws.Read()
+	//go ws.Read()
 	go ws.Write()
 
 	go ws.Test123()
+
+	time.Sleep(100 * time.Second)
 }
 
 func (ws *wsClientService) Read() {
@@ -78,7 +83,7 @@ func (ws *wsClientService) Write() {
 		fmt.Println("write for")
 		select {
 		case context := <-ws.context:
-			err := ws.conn.WriteMessage(1, context)
+			err := ws.conn.WriteMessage(websocket.BinaryMessage, context)
 			if err != nil {
 				fmt.Println("ws write err", err)
 			} else {

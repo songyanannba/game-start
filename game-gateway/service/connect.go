@@ -2,9 +2,11 @@ package service
 
 import (
 	"fmt"
-	"game-gateway/connect"
+	"game-gateway/manager"
+	"game-gateway/protoc/pb"
 	"game-gateway/util"
 	"github.com/gin-gonic/gin"
+	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/websocket"
 	"net/http"
 )
@@ -32,9 +34,20 @@ func RoomRegister(ctx *gin.Context) {
 		return
 	}
 
-	gameClient := connect.NewGameClient(conn, userId)
+	gameClient := NewGameClient(conn, userId)
 
 	go gameClient.Read()
 	go gameClient.Write()
+
+	manager.NastManager.SubTopic("topic-syn", func(msg *pb.NetMessage) {
+		netMsg := &pb.NetMessage{}
+
+		err = proto.Unmarshal(msg.Content, netMsg)
+		if err != nil {
+			fmt.Println("manager.NastManager.SubTopic err", err)
+		}
+		fmt.Println("manager.NastManager.SubTopic ", netMsg)
+
+	})
 
 }
