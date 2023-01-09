@@ -18,6 +18,20 @@ type wsClientService struct {
 	conn    *websocket.Conn
 }
 
+func (ws *wsClientService) Send(msgType int32, userId, serviceId string, message proto.Message) {
+
+	messageMarshal, _ := proto.Marshal(message)
+	msg := &pb.NetMessage{
+		ServiceId: serviceId,
+		UId:       userId,
+		Content:   messageMarshal,
+		Type:      msgType,
+	}
+
+	msgMarshal, _ := proto.Marshal(msg)
+	ws.context <- msgMarshal
+}
+
 var WsClientService = wsClientService{
 	context: make(chan []byte, 1024),
 }
@@ -55,9 +69,7 @@ func (ws *wsClientService) Start() {
 func (ws *wsClientService) Read() {
 	fmt.Println("Read for")
 
-	defer func() {
-		ws.conn.Close()
-	}()
+	defer ws.conn.Close()
 
 	for {
 		var err error

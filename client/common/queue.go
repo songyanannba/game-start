@@ -44,7 +44,34 @@ func (q *synQueue) SwapQue() {
 	q.inLock.Unlock()
 }
 
+func (q *synQueue) outQueLen() int {
+	return int(q.outLen)
+}
+
+func (q *synQueue) ConsumeQue() *list.List {
+	q.outLock.Lock()
+	defer q.outLock.Unlock()
+
+	returnList := &list.List{}
+
+	for q.outQueLen() > 0 {
+		retQue := q.RemoveQue()
+		if retQue != nil {
+			returnList.PushBack(retQue)
+		}
+		atomic.AddInt32(&q.outLen, -1)
+	}
+
+	return returnList
+}
+
+func (q *synQueue) SwapAndConsumeQueue() *list.List {
+
+	q.SwapQue()
+	return q.ConsumeQue()
+}
+
 //删除
-func (q *synQueue) RemoveQue() {
-	q.outQueue.Remove(q.outQueue.Front())
+func (q *synQueue) RemoveQue() interface{} {
+	return q.outQueue.Remove(q.outQueue.Front())
 }

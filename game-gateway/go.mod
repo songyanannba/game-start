@@ -6,11 +6,13 @@ require (
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang/protobuf v1.5.0
 	github.com/gorilla/websocket v1.5.0
+	github.com/jinzhu/configor v1.2.1
 	github.com/nats-io/nats.go v1.22.1
 	google.golang.org/protobuf v1.28.1
 )
 
 require (
+	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
