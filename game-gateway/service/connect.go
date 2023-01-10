@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"game-gateway/manager"
 	"game-gateway/protoc/pb"
-	"game-gateway/util"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/websocket"
@@ -17,7 +16,7 @@ func RoomRegister(ctx *gin.Context) {
 		fmt.Println("缺少userId")
 		//return
 	}
-	userId = util.GetUUid()
+	///userId = util.GetUUid()
 
 	upgrader := websocket.Upgrader{
 		Subprotocols: []string{ctx.GetHeader("Sec-WebSocket-Protocol")},
@@ -36,18 +35,23 @@ func RoomRegister(ctx *gin.Context) {
 
 	gameClient := NewGameClient(conn, userId)
 
+	GameClientManager.register <- gameClient
+
 	go gameClient.Read()
 	go gameClient.Write()
 
+	//客户端 sub 订阅服务端 发过来的消息 再发给端侧
 	manager.NastManager.SubTopic("topic-syn", func(msg *pb.NetMessage) {
 		netMsg := &pb.NetMessage{}
 
 		err = proto.Unmarshal(msg.Content, netMsg)
 		if err != nil {
 			fmt.Println("manager.NastManager.SubTopic err", err)
+			return
 		}
 		fmt.Println("manager.NastManager.SubTopic ", netMsg)
 
+		GameClientManager.sentOut <- netMsg
 	})
 
 }

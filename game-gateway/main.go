@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"game-gateway/api"
+	"game-gateway/service"
 )
 
 func main() {
@@ -25,4 +26,5 @@ func initMain() {
 	//日志
 
 	//...
+	service.GameClientManager.Start()
 }

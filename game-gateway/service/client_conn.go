@@ -7,8 +7,6 @@ import (
 	"game-gateway/util"
 	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/websocket"
-
-	"sync"
 )
 
 const PLAYER = "player"
@@ -81,46 +79,13 @@ func (c *gameClient) Write() {
 		select {
 		case data, ok := <-c.Send:
 			if ok {
+				fmt.Println("接收客户端管理发过来的 数据", string(data))
+
 				c.SocketConn.WriteMessage(websocket.BinaryMessage, data)
 			} else {
 				fmt.Println("gameClient Write <-c.Send  err")
 			}
 		}
 	}
-
-}
-
-type gameClientManager struct {
-	userMap     map[string]map[string]*gameClient
-	clientGroup map[string]map[string]*gameClient
-	register    chan *gameClient
-	unRegister  chan *gameClient
-	broadCost   *broadCast
-	sentOut     *pb.NetMessage
-	handler     map[int]func(gct *gameClient, content []byte)
-	sync        sync.RWMutex
-}
-
-type broadCast struct {
-	Msg     []byte
-	GroupId string
-	bl      bool
-}
-
-type NetMessage struct {
-	Type      int
-	content   []byte
-	ServiceID string
-	UId       string
-}
-
-var GameClientManager = gameClientManager{
-	userMap:    make(map[string]map[string]*gameClient),
-	register:   make(chan *gameClient, 1024),
-	unRegister: make(chan *gameClient, 1024),
-	handler:    make(map[int]func(gct *gameClient, content []byte)),
-}
-
-func (gcm *gameClientManager) Start() {
 
 }
