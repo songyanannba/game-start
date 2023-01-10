@@ -19,8 +19,8 @@ func NewGameClient(conn *websocket.Conn, userId string) *gameClient {
 		ID:         util.GetUUid(),
 		UserId:     userId,
 		SocketConn: conn,
-		Send:       make([]byte, 102400),
-		SendText:   make([]byte, 102400),
+		Send:       make(chan []byte, 102400),
+		SendText:   make(chan []byte, 102400),
 		CloseChan:  make(chan struct{}),
 		Closeted:   false,
 	}
@@ -30,8 +30,8 @@ type gameClient struct {
 	ID         string
 	UserId     string
 	SocketConn *websocket.Conn
-	Send       []byte
-	SendText   []byte
+	Send       chan []byte
+	SendText   chan []byte
 	CloseChan  chan struct{}
 	Closeted   bool
 }
@@ -77,7 +77,16 @@ func (c *gameClient) Write() {
 	}()
 
 	//收到服务返回的信息 并返回
-	select {}
+	for {
+		select {
+		case data, ok := <-c.Send:
+			if ok {
+				c.SocketConn.WriteMessage(websocket.BinaryMessage, data)
+			} else {
+				fmt.Println("gameClient Write <-c.Send  err")
+			}
+		}
+	}
 
 }
 

@@ -13,7 +13,7 @@ func NewApi() *gin.Engine {
 	echoRouter := engine.Group("/ktpd")
 	{
 
-		echoRouter.GET("/room/:grop", service.RoomGameConn)
+		echoRouter.GET("/room/:group", service.RoomGameConn)
 
 		echoRouter.GET("/hello", func(context *gin.Context) {
 			fmt.Println("world")
