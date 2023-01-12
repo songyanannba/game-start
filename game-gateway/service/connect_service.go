@@ -5,5 +5,5 @@ import (
 )
 
 func RoomGameConn(ctx *gin.Context) {
-	RoomRegister(ctx)
+	GameClientManager.RoomRegister(ctx)
 }

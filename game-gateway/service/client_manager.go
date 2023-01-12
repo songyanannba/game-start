@@ -46,19 +46,20 @@ func (gcm *gameClientManager) Start() {
 
 	for {
 		select {
-		case gc, ok := <-gcm.register:
-			if !ok {
-				return
+		case gc := <-gcm.register:
+			if gcm.userMap[gc.UserId] == nil {
+				gcm.userMap[gc.UserId] = make(map[string]*gameClient)
+				gcm.userMap[gc.UserId][gc.ID] = gc
+			} else {
+				gcm.userMap[gc.UserId][gc.ID] = gc
 			}
-			gcm.userMap[gc.UserId][gc.ID] = gc
 
-		case gc, ok := <-gcm.unRegister:
-			if !ok {
-				return
-			}
-			if uMaps, o := gcm.userMap[gc.UserId]; o {
-				for kk, _ := range uMaps {
-					delete(gcm.userMap[gc.UserId], kk)
+		case gc := <-gcm.unRegister:
+
+			if uMaps, ok := gcm.userMap[gc.UserId]; ok {
+				for clientId, _ := range uMaps {
+					close(gcm.userMap[gc.UserId][clientId].Send)
+					delete(gcm.userMap[gc.UserId], clientId)
 				}
 			}
 

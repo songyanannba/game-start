@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func RoomRegister(ctx *gin.Context) {
+func (m *gameClientManager) RoomRegister(ctx *gin.Context) {
 	userId := ctx.GetHeader("userId")
 	if len(userId) <= 0 {
 		fmt.Println("缺少userId")
@@ -35,7 +35,7 @@ func RoomRegister(ctx *gin.Context) {
 
 	gameClient := NewGameClient(conn, userId)
 
-	GameClientManager.register <- gameClient
+	m.register <- gameClient
 
 	go gameClient.Read()
 	go gameClient.Write()
