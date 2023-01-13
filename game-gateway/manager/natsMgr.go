@@ -35,7 +35,7 @@ func (n *natsManager) Start() {
 		fmt.Println("nats conn err = ", err)
 		return
 	}
-	defer connect.Close()
+	//defer connect.Close()
 
 	n.Nats = connect
 

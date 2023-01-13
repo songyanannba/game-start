@@ -2,6 +2,9 @@ package service
 
 import (
 	"fmt"
+	"game-player/conf"
+	"game-player/protoc/pb"
+	"github.com/golang/protobuf/proto"
 	"github.com/nats-io/nats.go"
 
 	"sync"
@@ -9,14 +12,16 @@ import (
 )
 
 var NatsManager = natsManager{
-	Nats:       nil,
-	PlayersSub: make(map[string]*nats.Subscription),
+	Nats:          nil,
+	PlayerSubBack: nil,
+	PlayersSubMap: make(map[string]*nats.Subscription),
 }
 
 type natsManager struct {
-	Nats       *nats.Conn
-	PlayersSub map[string]*nats.Subscription
-	Sync       sync.Mutex
+	Nats          *nats.Conn
+	PlayerSubBack *nats.Subscription
+	PlayersSubMap map[string]*nats.Subscription
+	Sync          sync.Mutex
 }
 
 func (n *natsManager) Start() {
@@ -34,8 +39,26 @@ func (n *natsManager) Start() {
 		fmt.Println("nats conn err = ", err)
 		return
 	}
-	defer connect.Close()
+	//defer connect.Close()
 
 	n.Nats = connect
+
+	n.SubBack(conf.PlayerConf.ServiceId)
+
+}
+
+func (n *natsManager) SubBack(serviceID string) {
+
+	n.PlayerSubBack, _ = n.Nats.Subscribe(serviceID , func(msg *nats.Msg) {
+		netMsg := &pb.NetMessage{}
+		err := proto.Unmarshal(msg.Data, netMsg)
+		if err != nil {
+			fmt.Println("SubBack err ", err )
+		}
+		fmt.Println("netMessage == " , netMsg)
+
+		//服务调用
+
+	})
 
 }
