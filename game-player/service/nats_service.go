@@ -24,6 +24,45 @@ type natsManager struct {
 	Sync          sync.Mutex
 }
 
+func (n *natsManager) Send(where string, m *pb.NetMessage) {
+	marshalMsg, _ := proto.Marshal(m)
+
+	n.Nats.Publish(where, marshalMsg)
+}
+
+func (n *natsManager) SendGateway(player string, m proto.Message) {
+	msg := &pb.NetMessage{
+		ServiceId: "1224",
+		UId:       player,
+		Content:   nil,
+		Type:      0,
+	}
+	marshal, err := proto.Marshal(m)
+	if err != nil {
+		fmt.Println("nats send maeshal err = ", err)
+		return
+	}
+	msg.Content = marshal
+	n.Send("topic-syn", msg)
+}
+
+func (n *natsManager) SubBack(serviceID string) {
+
+	n.PlayerSubBack, _ = n.Nats.Subscribe(serviceID, func(msg *nats.Msg) {
+		netMsg := &pb.NetMessage{}
+		err := proto.Unmarshal(msg.Data, netMsg)
+		if err != nil {
+			fmt.Println("SubBack err ", err)
+		}
+		fmt.Println("netMessage == ", netMsg)
+
+		//服务调用
+
+		PlayerService.PlayerServiceTestSend()
+	})
+
+}
+
 func (n *natsManager) Start() {
 
 	connect, err := nats.Connect(
@@ -43,22 +82,7 @@ func (n *natsManager) Start() {
 
 	n.Nats = connect
 
-	n.SubBack(conf.PlayerConf.ServiceId)
+	serviceId := conf.PlayerConf.ServiceId
 
-}
-
-func (n *natsManager) SubBack(serviceID string) {
-
-	n.PlayerSubBack, _ = n.Nats.Subscribe(serviceID , func(msg *nats.Msg) {
-		netMsg := &pb.NetMessage{}
-		err := proto.Unmarshal(msg.Data, netMsg)
-		if err != nil {
-			fmt.Println("SubBack err ", err )
-		}
-		fmt.Println("netMessage == " , netMsg)
-
-		//服务调用
-
-	})
-
+	n.SubBack(serviceId)
 }

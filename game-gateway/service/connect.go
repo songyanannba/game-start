@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/websocket"
+	"github.com/nats-io/nats.go"
 	"net/http"
 )
 
@@ -17,7 +18,9 @@ func (m *gameClientManager) RoomRegister(ctx *gin.Context) {
 		//return
 	}
 	///userId = util.GetUUid()
-
+	if len(userId) == 0 {
+		userId = "syn"
+	}
 	upgrader := websocket.Upgrader{
 		Subprotocols: []string{ctx.GetHeader("Sec-WebSocket-Protocol")},
 
@@ -41,17 +44,24 @@ func (m *gameClientManager) RoomRegister(ctx *gin.Context) {
 	go gameClient.Write()
 
 	//客户端 sub 订阅服务端 发过来的消息 再发给端侧
-	manager.NastManager.SubTopic("topic-syn", func(msg *pb.NetMessage) {
+	//manager.NastManager.SubTopic("topic-syn")
+	manager.NastManager.Nats.Subscribe("topic-syn", func(msg *nats.Msg) {
 		netMsg := &pb.NetMessage{}
-
-		err = proto.Unmarshal(msg.Content, netMsg)
+		err := proto.Unmarshal(msg.Data, netMsg)
 		if err != nil {
-			fmt.Println("manager.NastManager.SubTopic err", err)
-			return
+			fmt.Println("SubTopic err ", err)
 		}
-		fmt.Println("manager.NastManager.SubTopic ", netMsg)
+		fmt.Println("接收到 服务端 发来的信息 netMessage == ", netMsg)
 
-		GameClientManager.sentOut <- netMsg
+		// 找到userid
+		//发 往 conn manager sendOut
+		//然后 长链接 管理器 找到 user对应的 连接
+		m.SendOutBack(netMsg)
+
 	})
 
+}
+
+func (m *gameClientManager) SendOutBack(msg *pb.NetMessage) {
+	m.sentOut <- msg
 }

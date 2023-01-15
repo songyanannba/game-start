@@ -44,41 +44,45 @@ func (gcm *gameClientManager) Start() {
 
 	fmt.Println("gameClientManager start...")
 
-	for {
-		select {
-		case gc := <-gcm.register:
-			if gcm.userMap[gc.UserId] == nil {
-				gcm.userMap[gc.UserId] = make(map[string]*gameClient)
-				gcm.userMap[gc.UserId][gc.ID] = gc
-			} else {
-				gcm.userMap[gc.UserId][gc.ID] = gc
-			}
-
-		case gc := <-gcm.unRegister:
-
-			if uMaps, ok := gcm.userMap[gc.UserId]; ok {
-				for clientId, _ := range uMaps {
-					close(gcm.userMap[gc.UserId][clientId].Send)
-					delete(gcm.userMap[gc.UserId], clientId)
+	go func() {
+		for {
+			select {
+			case gc := <-gcm.register:
+				if gcm.userMap[gc.UserId] == nil {
+					gcm.userMap[gc.UserId] = make(map[string]*gameClient)
+					gcm.userMap[gc.UserId][gc.ID] = gc
+				} else {
+					gcm.userMap[gc.UserId][gc.ID] = gc
 				}
-			}
 
-		case sendData, ok := <-gcm.sentOut:
-			if !ok {
-				return
-			}
+				fmt.Println("注册客户端 = ", gc.UserId, gc.ID)
 
-			if mapClientIds, ok := gcm.userMap[sendData.UId]; ok {
-				for id, mapClientId := range mapClientIds {
-					fmt.Println("client manager send to client id", id)
+			case gc := <-gcm.unRegister:
 
-					marshal, _ := proto.Marshal(sendData)
-					mapClientId.Send <- marshal
+				if uMaps, ok := gcm.userMap[gc.UserId]; ok {
+					for clientId, _ := range uMaps {
+						close(gcm.userMap[gc.UserId][clientId].Send)
+						delete(gcm.userMap[gc.UserId], clientId)
+					}
 				}
+
+			case sendData, ok := <-gcm.sentOut:
+				if !ok {
+					return
+				}
+
+				if mapClientIds, ok := gcm.userMap[sendData.UId]; ok {
+					for id, mapClientId := range mapClientIds {
+						fmt.Println("client manager send to client id", id)
+
+						marshal, _ := proto.Marshal(sendData)
+						mapClientId.Send <- marshal
+					}
+				}
+
 			}
 
 		}
-
-	}
+	}()
 
 }

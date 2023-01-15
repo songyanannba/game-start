@@ -38,7 +38,7 @@ var WsClientService = wsClientService{
 
 func (ws *wsClientService) Start() {
 	header := http.Header{}
-	header.Add("uid", "syn")
+	header.Add("userId", "syn")
 	header.Add("auth", "syn")
 
 	u := url.URL{
@@ -60,10 +60,11 @@ func (ws *wsClientService) Start() {
 	}
 	//go ws.Read()
 	go ws.Write()
+	go ws.Read()
 
 	go ws.Test123()
 
-	time.Sleep(100 * time.Second)
+	time.Sleep(1000 * time.Second)
 }
 
 func (ws *wsClientService) Read() {
