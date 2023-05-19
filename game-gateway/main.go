@@ -16,7 +16,7 @@ func main() {
 	newApi := api.NewApi()
 
 	fmt.Println("123435657890")
-	newApi.Run("127.0.0.1:8765")
+	newApi.Run("0.0.0.0:8765")
 }
 
 func initMain() {
