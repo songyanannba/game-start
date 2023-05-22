@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	fmt.Println("start")
+	fmt.Println("start...")
 
 	initMain()
 
