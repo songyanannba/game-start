@@ -23,6 +23,7 @@ func main() {
 	for {
 		select {
 		case <-controlC:
+			fmt.Println("player end。。。")
 			return
 		}
 	}
