@@ -1,0 +1,20 @@
+db:
+  host: "127.0.0.1"
+  port: 3306
+  dbName: "slot"
+  userName: "root"
+  password: "003416nba"
+redis:
+  Host: "127.0.0.1"
+  Port: 6379
+slot6_srv:
+  srvName: "slot6-srv"
+  Host: "192.168.6.120"
+  Port: 9001
+  Tags:
+    - happy
+    - account_srv
+slot6_cli:
+  srvName: "slot6-cli"
+  Host: "192.168.6.120"
+  Port: 9002

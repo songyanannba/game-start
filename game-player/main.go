@@ -6,12 +6,13 @@ import (
 	"game-player/service"
 	"os"
 	"os/signal"
+	"syscall"
 )
 
 func main() {
 
 	controlC := make(chan os.Signal, 1)
-	signal.Notify(controlC)
+	signal.Notify(controlC, os.Interrupt, syscall.SIGTERM)
 
 	conf.PlayerConfInit() //配置
 

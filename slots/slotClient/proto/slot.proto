@@ -1,0 +1,20 @@
+syntax = "proto3";
+option go_package = "/pb";
+
+service SlotService {
+
+  rpc SlotTest(SlotTestReq) returns (SlotTestRes);
+
+}
+
+message SlotTestReq {
+  int32 SID = 1;
+  int32 Bet = 2;
+  int32 Type = 3;
+}
+
+message SlotTestRes {
+  string msg = 1;
+  int32 Code = 2;
+  string Data = 3;
+}
