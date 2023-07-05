@@ -35,3 +35,12 @@ message SlotTestRes {
   int32 Code = 2;
   string Data = 3;
 }
+
+
+message netMessage {
+  string ServiceId = 1;
+  string UId = 2;
+  bytes content = 3;
+  int32 type = 4;
+  int32 SlotID = 5;
+}

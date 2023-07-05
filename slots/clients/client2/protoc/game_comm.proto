@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+
+
+
+
+enum DoType {
+  COMMON = 0;
+
+  DI_YI = 1 ;
+  DI_ER = 2 ;
+  DI_SAN = 3 ;
+
+}
+
+message netMessage {
+  string ServiceId = 1;
+  string UId = 2;
+  bytes content = 3;
+  int32 type = 4;
+
+}
+
+
+message gameMessage {
+  string to =1;
+  string do =2;
+  string todo =3;
+}
