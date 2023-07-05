@@ -1,20 +1,49 @@
-db:
-  host: "127.0.0.1"
-  port: 3306
-  dbName: "slot"
-  userName: "root"
-  password: "003416nba"
+mysql:
+  path: 192.168.6.127
+  port: "3306"
+  config: charset=utf8mb4&parseTime=True&loc=Local
+  db-name: slot
+  username: root
+  password: "123456"
+  prefix: ""
+  singular: false
+  engine: ""
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: info
+  log-zap: false
 redis:
-  Host: "127.0.0.1"
-  Port: 6379
+  db: 3
+  addr: 192.168.6.127:6379
+  password: ""
+zap:
+  level: info
+  prefix: ''
+  format: console
+  director: log
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  max-age: 30
+  show-line: true
+  log-in-console: true
 slot6_srv:
   srvName: "slot6-srv"
   Host: "192.168.6.120"
   Port: 9001
   Tags:
-    - happy
-    - account_srv
+    - slot
 slot6_cli:
   srvName: "slot6-cli"
   Host: "192.168.6.120"
   Port: 9002
+
+
+#db:
+#  host: "127.0.0.1"
+#  port: 3306
+#  dbName: "slot"
+#  userName: "root"
+#  password: "003416nba"
+#redis:
+#  Host: "127.0.0.1"
+#  Port: 6379

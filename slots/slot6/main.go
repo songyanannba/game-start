@@ -6,13 +6,19 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"slot6/core"
 	"slot6/protoc/pb"
 	"slot6/src"
 	"syscall"
 )
 
-func main() {
+func init() {
+	//配置
 
+	core.BaseInit()
+}
+
+func main() {
 	grpcServer()
 }
 

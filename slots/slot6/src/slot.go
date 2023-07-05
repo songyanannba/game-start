@@ -11,30 +11,6 @@ import (
 type SlotService struct {
 }
 
-type Machine interface {
-	GetSpin() *component.Spin
-	Exec()
-	GetInitData()
-	GetResData()
-	SumGain()
-	GetSpins() []*component.Spin
-}
-
-func RunSpin(s *component.Spin) (m Machine, err error) {
-	m = unit.NewMachine(s)
-	m.Exec()
-	return m, nil
-}
-
-func Play(slotId uint, amount int, options ...component.Option) (m Machine, err error) {
-	var s *component.Spin
-	s, err = component.NewSpin(slotId, amount, options...)
-	if err != nil {
-		return nil, err
-	}
-	return RunSpin(s)
-}
-
 func (s *SlotService) SlotSpin(ctx context.Context, req *pb.SpinReq) (*pb.SpinRes, error) {
 	var opts []component.Option
 	Opts := append(opts,
@@ -42,7 +18,10 @@ func (s *SlotService) SlotSpin(ctx context.Context, req *pb.SpinReq) (*pb.SpinRe
 		component.SetResNum(int(req.ResNum)),
 	)
 
-	Play(uint(req.GameId), int(req.Bet), Opts...)
+	_, err := unit.Play(uint(req.GameId), int(req.Bet), Opts...)
+	if err != nil {
+		fmt.Println("Play err", err)
+	}
 
 	//todo
 	spinRes := &pb.SpinRes{
