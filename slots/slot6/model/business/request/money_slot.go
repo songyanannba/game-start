@@ -1,6 +1,8 @@
 package request
 
 import (
+	"slot6/model/business"
+	"slot6/model/common/request"
 	"time"
 )
 

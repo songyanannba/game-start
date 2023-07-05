@@ -1,4 +1,3 @@
-// 自动生成模板MoneySlot
 package business
 
 import "slot6/global"
