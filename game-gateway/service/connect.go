@@ -17,7 +17,7 @@ func (m *gameClientManager) RoomRegister(ctx *gin.Context) {
 		fmt.Println("缺少userId")
 		//return
 	}
-	///userId = util.GetUUid()
+	///userId = utils.GetUUid()
 	if len(userId) == 0 {
 		userId = "syn"
 	}

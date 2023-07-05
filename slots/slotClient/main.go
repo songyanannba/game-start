@@ -13,5 +13,5 @@ func main() {
 	{
 		accountGroup.GET("/SlotTest", hander.SlotTest)
 	}
-	r.Run(fmt.Sprintf("%s:%d", "192.168.6.120", 9002))
+	r.Run(fmt.Sprintf("%s:%d", "192.168.6.119", 9002))
 }

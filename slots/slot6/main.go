@@ -13,16 +13,15 @@ import (
 
 func main() {
 
-	grpcHold1()
-
+	grpcServer()
 }
 
 // grpc 服务
-func grpcHold1() {
+func grpcServer() {
 	server := grpc.NewServer()
 	pb.RegisterSlotServiceServer(server, &src.SlotService{})
 
-	addr := fmt.Sprintf("%s:%d", "192.168.6.120", 9001)
+	addr := fmt.Sprintf("%s:%d", "192.168.6.119", 9001)
 	listen, err := net.Listen("tcp", addr)
 	if err != nil {
 		fmt.Println("grpc err")
@@ -38,7 +37,7 @@ func grpcHold1() {
 }
 
 // 常规保持服务不退出
-func hold1() {
+func Server1() {
 	controlC := make(chan os.Signal, 1)
 	signal.Notify(controlC, os.Interrupt, syscall.SIGTERM)
 	service := src.SlotService{}

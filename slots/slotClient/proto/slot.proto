@@ -4,7 +4,24 @@ option go_package = "/pb";
 service SlotService {
 
   rpc SlotTest(SlotTestReq) returns (SlotTestRes);
+  rpc SlotSpin(SpinReq) returns (SpinRes);
 
+}
+
+message SpinReq {
+  int32  GameId = 1;
+  int32  SessionId = 2;
+  int32  Uid = 3;
+  int32  FreeNum = 4 ;// 剩余免费次数
+  int32  ResNum = 5 ;//  剩余Respin次数
+  int64  Raise = 6;
+  int64  Bet = 7 ;
+}
+
+message SpinRes {
+  string msg = 1;
+  int32  Code = 2;
+  string Data = 3;
 }
 
 message SlotTestReq {
