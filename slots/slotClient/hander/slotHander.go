@@ -12,7 +12,7 @@ import (
 func SlotTest(c *gin.Context) {
 
 	//grpc 请求
-	conn, err := grpc.Dial("192.168.6.120:9001", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:9001", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("slit test grpc dial err", err)
 		return
@@ -42,7 +42,7 @@ func SlotTest(c *gin.Context) {
 func Slot6Spin(c *gin.Context) {
 
 	//grpc 请求
-	conn, err := grpc.Dial("192.168.6.119:9001", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:9001", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("slit test grpc dial err", err)
 		return
@@ -75,7 +75,7 @@ func Slot6Spin(c *gin.Context) {
 func Slot6SpinTest() {
 
 	//grpc 请求
-	conn, err := grpc.Dial("192.168.6.119:9001", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:9001", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("slit test grpc dial err", err)
 		return
@@ -102,7 +102,7 @@ func Slot6SpinTest() {
 
 func Slot6SpinConn(c *gin.Context) {
 	//grpc 请求
-	conn, err := grpc.Dial("192.168.6.119:9001", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:9001", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("slit test grpc dial err", err)
 		return

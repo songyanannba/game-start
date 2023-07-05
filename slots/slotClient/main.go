@@ -28,5 +28,5 @@ func main() {
 		accountGroup.GET("/Slot6SpinConn", server.GameConn) //长链接 slot grpc ; 用slot/clients/ 调试
 	}
 
-	r.Run(fmt.Sprintf("%s:%d", "192.168.6.119", 9002))
+	r.Run(fmt.Sprintf("%s:%d", "127.0.0.1", 9002))
 }

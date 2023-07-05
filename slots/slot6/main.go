@@ -27,7 +27,7 @@ func grpcServer() {
 	server := grpc.NewServer()
 	pb.RegisterSlotServiceServer(server, &src.SlotService{})
 
-	addr := fmt.Sprintf("%s:%d", "192.168.6.119", 9001)
+	addr := fmt.Sprintf("%s:%d", "127.0.0.1", 9001)
 	listen, err := net.Listen("tcp", addr)
 	if err != nil {
 		fmt.Println("grpc err")
