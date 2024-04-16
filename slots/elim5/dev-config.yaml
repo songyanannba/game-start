@@ -1,0 +1,49 @@
+mysql:
+  path: 127.0.0.1
+  port: "3306"
+  config: charset=utf8mb4&parseTime=True&loc=UTC
+  db-name: slot
+  username: root
+  password: ""
+  prefix: ""
+  singular: false
+  engine: ""
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: info
+  log-zap: false
+redis:
+  db: 0
+  addr: 123.60.111.163:7000 #自己
+  password: ""
+slot6_srv:
+  srvName: "slot5-srv"
+  Host: "192.168.6.106"
+  Port: 9001
+  Tags:
+    - slot6
+slot6_cli:
+  srvName: "slot5-cli"
+  Host: "192.168.6.106"
+  Port: 9002
+zap:
+  level: info
+  prefix: ''
+  format: console
+  director: log
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  max-age: 30
+  show-line: true
+  log-in-console: true
+
+
+#db:
+#  host: "127.0.0.1"
+#  port: 3306
+#  dbName: "logicPack"
+#  userName: "root"
+#  password: "003416nba"
+#redis:
+#  Host: "127.0.0.1"
+#  Port: 6379

@@ -1,0 +1,84 @@
+syntax = "proto3";
+package common;
+option go_package = "elim5/pbs/common";
+import "proto/common/common.proto";
+
+//牌
+message tag {
+  int32 tag_id = 1; // 标签id
+  int32 x = 2; //x坐标
+  int32 y = 3; //y坐标
+  int32 multiple = 4; // 标签的倍数
+  bool is_wild = 5; // 是否百搭
+  string redundancy = 6; //冗余 slotId-value
+  //7-int  可选[0,1,2,3,4,5]  slot7-技能编号 0-没技能
+  //16-int 可选[0,1,2,4,8......128]   slot16-隐藏翻倍 0-没翻倍 1-没翻倍,特殊显示,>=2 翻倍
+  bool is_megastack = 7  ;//是否是变换标签变来的
+}
+
+//牌列表
+message tags{
+  repeated tag tags = 1; //牌id列表
+  int64 amount = 2; //倍数
+  int32 point = 3;
+  int32 Orientation = 4; //0 左 1 右
+}
+
+//步骤流程
+message step_flow {
+  int64 index = 1; //索引
+  int64 gain = 2; //总赢取
+  repeated tags remove_list = 3; //移除的牌列表
+  tags add_list = 4; //新增的牌
+  int32 points = 5;//积分点数 {6}
+  int32 remove_cause = 6;//消除的原因,remove_list为空的时候才生效 0:默认 1:积分技能 2: {6}
+  repeated pos skill_center = 7; //技能点 {6 }
+  repeated int32 special_mul = 8;//机台特殊翻倍
+  repeated tags alter_list = 9;//替换的牌
+  accumulate accumulate = 10; //累积（积分/翻倍） {9}
+}
+
+//游戏步骤
+message match_spin_step {
+  int32 type = 1; //// 游戏类型 1 normal_spin 2 free_spin 3: re_spin 4: re_spin_link
+  int32 id = 2; //id
+  int32 pid = 3; //pid
+  int64 sum_gain = 4; //总赢取
+  repeated tags init_list = 5; //初始排布
+  repeated step_flow flows = 6; //游戏流程
+  repeated single_tag single_tags = 7;
+  repeated int32 tem_init = 8;//模版
+  repeated tags other_line = 9;//其他赢钱划线
+}
+
+//下注回复
+message match_spin_ack{
+  ack_head head = 1; //头
+  spin_opt opt = 2; //下注配置
+  int64 total_win = 3; //总赢取
+  int64 total_bet = 4; //总下注
+  int64 total_raise = 5; //总加注
+  repeated match_spin_step steps = 6; //下注回复
+  int32 txn_id = 7; //交易id
+  int64 before_amount = 8; //before余额
+  int64 after_amount = 9; //after余额
+}
+
+message pos {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message single_tag {
+  tag single = 1;
+  int32 flow_index = 2;//初始生成的索引
+  repeated pos pos_oder = 3;//位置变化的一个序列
+  int32 sub_id = 4;//1,2,3
+}
+
+message accumulate {
+  int32 general = 1;//常规
+  int32 left = 2;   //左边
+  int32 right = 3;  //右边
+  int32 points = 4;//积分点数 （兼容）
+}

@@ -2,7 +2,7 @@ mysql:
   path: 192.168.6.127
   port: "3306"
   config: charset=utf8mb4&parseTime=True&loc=Local
-  db-name: slot
+  db-name: logicPack
   username: root
   password: "123456"
   prefix: ""
@@ -41,7 +41,7 @@ zap:
 #db:
 #  host: "127.0.0.1"
 #  port: 3306
-#  dbName: "slot"
+#  dbName: "logicPack"
 #  userName: "root"
 #  password: "003416nba"
 #redis:

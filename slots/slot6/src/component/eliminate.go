@@ -63,15 +63,15 @@ func NewTarget(spin *Spin, IsFree bool) *eliminate.Target {
 			scatterNum = 3
 			mulNumEvent = comp.Event.M[19].(*base.ChangeTableEvent)
 		} else {
-			ints, key := comp.Event.M[0].(*base.IntervalRatioEvent).Fetch()
-			maxMul = float64(ints[1])
-			randMul = helper.RandInt(ints[1]-ints[0]) + ints[0]
-			minMul = float64(randMul)
-			initNum = comp.Event.M[key+1].(*base.ChangeTableEvent).Fetch()
+			//ints, key := comp.Event.M[0].(*base.IntervalRatioEvent).Fetch()
+			//maxMul = float64(ints[1])
+			//randMul = helper.RandInt(ints[1]-ints[0]) + ints[0]
+			//minMul = float64(randMul)
+			//initNum = comp.Event.M[key+1].(*base.ChangeTableEvent).Fetch()
 			switch spin.Config.SlotId {
 			case 5:
-				scatterNum = comp.Event.M[16].(*base.ChangeTableEvent).Fetch()
-				mulNumEvent = comp.Event.M[19].(*base.ChangeTableEvent)
+				//scatterNum = comp.Event.M[16].(*base.ChangeTableEvent).Fetch()
+				//mulNumEvent = comp.Event.M[19].(*base.ChangeTableEvent)
 			case 6:
 				scatterNum = 0
 				mulNumEvent = &base.ChangeTableEvent{}
@@ -87,10 +87,10 @@ func NewTarget(spin *Spin, IsFree bool) *eliminate.Target {
 		mulNumEvent = comp.Event.M[19].(*base.ChangeTableEvent)
 	}
 
-	//minMul = 100
-	//maxMul = 200
-	//initNum = 10
-	//scatterNum = 0
+	minMul = 100
+	maxMul = 200
+	initNum = 10
+	scatterNum = 0
 	//mulNumEvent = comp.Event.M[19].(*base.ChangeTableEvent)
 	return &eliminate.Target{
 		MinMul:      minMul,

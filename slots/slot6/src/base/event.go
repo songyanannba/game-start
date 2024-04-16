@@ -123,21 +123,28 @@ func (e *Event) Unit5NewEvent(events []*business.SlotEvent) {
 	}
 }
 
+//func (e *Event) Unit6NewEvent(events []*business.SlotEvent) {
+//	for i, event := range events {
+//		if i == 0 {
+//			e.M[i] = GetIntervalRatioEvent(event.Event1)
+//		} else {
+//			switch i {
+//			case 16, 17, 18, 19, 20:
+//				e.M[i] = Unit6ParseWeightDataStr(event.Event1)
+//			default:
+//				e.Add(i, event.Event1)
+//			}
+//
+//		}
+//	}
+//}
+
 func (e *Event) Unit6NewEvent(events []*business.SlotEvent) {
 	for i, event := range events {
-		if i == 0 {
-			e.M[i] = GetIntervalRatioEvent(event.Event1)
-		} else {
-			switch i {
-			case 16, 17, 18, 19, 20:
-				e.M[i] = Unit6ParseWeightDataStr(event.Event1)
-			default:
-				e.Add(i, event.Event1)
-			}
-
-		}
+		e.M[i] = Unit6ParseWeightDataStr(event.Event1)
 	}
 }
+
 func Unit6ParseWeightDataStr(str string) *Unit6LevelEvent {
 	result := &Unit6LevelEvent{}
 	// 按@符号拆分成两个字符串

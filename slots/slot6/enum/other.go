@@ -10,19 +10,19 @@ const (
 	UserStatus2Frozen = 2 // 冻结
 )
 
-// slot 滚轮类型
+// logicPack 滚轮类型
 const (
 	SlotReelType1Normal = 1 // slot普通滚轮
 	SlotReelType2FS     = 2 // slot免费滚轮
 )
 
-// slot 赢钱组合类型
+// logicPack 赢钱组合类型
 const (
 	SlotPayTableType1Common = 1 // slot普通赢钱组合
 	SlotPayTableType2Any    = 2 // slot任意赢钱组合
 )
 
-// slot 测试类型
+// logicPack 测试类型
 const (
 	SlotTestType1Time   = 1 // 指定次数
 	SlotTestType2Die    = 2 // 死亡次数
@@ -46,12 +46,12 @@ const (
 	ConfigNameSlotFreeTag    = "slot_free_tag"    // slot配置默认tag
 )
 
-// slot 事件类型
+// logicPack 事件类型
 const (
 	SlotEvent1ChangeTable = 1 // slot事件换表
 )
 
-// slot spin 玩法类型
+// logicPack spin 玩法类型
 const (
 	SlotSpinType1Normal = 1 // slot普通转
 	SlotSpinType2Fs     = 2 // slot免费转

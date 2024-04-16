@@ -12,6 +12,14 @@ import (
 	"slot6/utils/helper"
 )
 
+const ( //第6台普通转区间
+	Slot6Level1 = iota //第6台等级1的权重
+	Slot6Level2        //第6台等级2的权重
+	Slot6Level3        //第6台等级3的权重
+	Slot6Level4        //第6台等级4的权重
+	Slot6Level5        //第6台等级5的权重
+)
+
 // Machine 划线 + 特殊免费玩
 type Machine struct {
 	Spin  *component.Spin  `json:"-"`
@@ -104,11 +112,36 @@ func (m *Machine) PlayGame(count, rank int, reSpin int) {
 }
 
 func (m *Machine) RankUp(NowRank int, rmTags int) (rank int) {
-	rank1 := m.Spin.Config.Event.M[16].(*base.Unit6LevelEvent)
-	rank2 := m.Spin.Config.Event.M[17].(*base.Unit6LevelEvent)
-	rank3 := m.Spin.Config.Event.M[18].(*base.Unit6LevelEvent)
-	rank4 := m.Spin.Config.Event.M[19].(*base.Unit6LevelEvent)
-	rank5 := m.Spin.Config.Event.M[20].(*base.Unit6LevelEvent)
+
+	var (
+		rank1 *base.Unit6LevelEvent
+		rank2 *base.Unit6LevelEvent
+		rank3 *base.Unit6LevelEvent
+		rank4 *base.Unit6LevelEvent
+		rank5 *base.Unit6LevelEvent
+	)
+
+	if v, ok := m.Spin.Config.Event.M[Slot6Level1]; ok {
+		rank1 = v.(*base.Unit6LevelEvent)
+	}
+	if v, ok := m.Spin.Config.Event.M[Slot6Level2]; ok {
+		rank2 = v.(*base.Unit6LevelEvent)
+	}
+	if v, ok := m.Spin.Config.Event.M[Slot6Level3]; ok {
+		rank3 = v.(*base.Unit6LevelEvent)
+	}
+	if v, ok := m.Spin.Config.Event.M[Slot6Level4]; ok {
+		rank4 = v.(*base.Unit6LevelEvent)
+	}
+	if v, ok := m.Spin.Config.Event.M[Slot6Level5]; ok {
+		rank5 = v.(*base.Unit6LevelEvent)
+	}
+
+	//rank1 := m.Spin.Config.Event.M[16].(*base.Unit6LevelEvent)
+	//rank2 := m.Spin.Config.Event.M[17].(*base.Unit6LevelEvent)
+	//rank3 := m.Spin.Config.Event.M[18].(*base.Unit6LevelEvent)
+	//rank4 := m.Spin.Config.Event.M[19].(*base.Unit6LevelEvent)
+	//rank5 := m.Spin.Config.Event.M[20].(*base.Unit6LevelEvent)
 	rank = NowRank
 
 	if rmTags >= rank1.Collect && NowRank < enum.Rand1 {

@@ -1,0 +1,76 @@
+syntax = "proto3";
+package game;
+option go_package = "elim5/pbs/game";
+import "proto/common/common.proto";
+
+// 游戏步骤请求
+message game_step_req {
+  common.req_head head = 1; // 请求头
+  common.game_recover data = 2; // 游戏恢复数据
+}
+
+// 游戏步骤响应
+message game_step_ack {
+  common.ack_head head = 1; // 请求头
+}
+
+// 游戏流程记录
+message game_process {
+  common.game_recover data = 1; // 游戏恢复数据
+  uint64 record_id = 2; // 记录id
+  int64 create_time = 3; // 创建时间
+}
+
+// 基础牌属性
+message base_card {
+  int32 id = 1; //牌id
+  int32 x = 2; //x坐标
+  int32 y = 3; //y坐标
+  int32 mul = 4; // 标签的倍数
+  bool is_wild = 5; // 是否百搭
+  bool is_pay = 6; //是否pay_table
+  bool is_valid = 7; //是否有效
+
+}
+
+message base_step_flow {
+  int32 index = 1; //索引
+  int64 gain = 2; //总赢取
+}
+
+message base_spin_step {
+  int32 type = 1; //游戏类型 1 normal_spin 2 free_spin 3: re_spin 4: re_spin_link
+  int32 id = 2; //id
+  int32 pid = 3; //pid
+  int32 which = 4; // 配置选择
+  int32 jackpot_id = 5; //奖池id
+  int64 gain = 6; //赢取
+}
+
+message base_spin_ack {
+  common.spin_opt opt = 1; // 请求信息
+  int32 txn_id = 2; //交易id
+  int64 total_gain = 3; //总赢取
+  int64 total_bet = 4; //总下注
+  int64 before_amount = 5; //before余额
+  int64 after_amount = 6; //after余额
+}
+
+// Spin 选项请求
+message options_req {
+  common.req_head head = 1; // 请求头
+  int32 slot_id = 2; //slot_id
+  int32 type = 3; //类型 1:gamble 2:into free_spin
+  string opt_info = 4; // 选项信息
+  //31台 1:high_1 2:high_2 3:high_3 4:high_4 5:high_5
+  //21台 1/0 (进行gamble 0结束 1继续)
+}
+
+// Spin 选项响应
+message options_ack {
+  common.ack_head head = 1; // 请求头
+  int32 slot_id = 2; //slot_id
+  int32 type = 3; //类型 1:gamble 2:into free_spin
+  string proto_name = 4; // proto名称
+  bytes proto_bytes = 5; // proto字节流
+}

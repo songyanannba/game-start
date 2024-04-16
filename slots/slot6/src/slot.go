@@ -18,10 +18,17 @@ func (s *SlotService) SlotSpin(ctx context.Context, req *pb.SpinReq) (*pb.SpinRe
 		component.SetResNum(int(req.ResNum)),
 	)
 
-	_, err := unit.Play(uint(req.GameId), int(req.Bet), Opts...)
+	m, err := unit.Play(uint(req.GameId), int(req.Bet), Opts...)
 	if err != nil {
 		fmt.Println("Play err", err)
 	}
+
+	fmt.Println(m)
+
+	//var spin  *component.Spin
+	//var spins []*component.Spin
+	//spin = m.GetSpin()
+	//spins = m.GetSpins()
 
 	//todo
 	spinRes := &pb.SpinRes{

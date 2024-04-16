@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0
 // 	protoc        v3.19.3
-// source: slot.proto
+// source: logicPack.proto
 
 package pb
 
@@ -664,5 +664,5 @@ var _SlotService_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "slot.proto",
+	Metadata: "logicPack.proto",
 }

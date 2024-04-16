@@ -68,7 +68,7 @@ func (m *gameClientManager) Register(ctx *gin.Context) {
 
 func (m *gameClientManager) DealReadChan(SpinReqData *pb.NetMessage) {
 
-	//grpc 请求 slot
+	//grpc 请求 logicPack
 	conn, err := grpc.Dial("192.168.6.119:9001", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("slit test grpc dial err", err)

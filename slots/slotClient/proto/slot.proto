@@ -21,7 +21,7 @@ message SpinReq {
 message SpinRes {
   string msg = 1;
   int32  Code = 2;
-  string Data = 3;
+  netMessage msgData = 3;
 }
 
 message SlotTestReq {
