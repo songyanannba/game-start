@@ -1,0 +1,54 @@
+syntax = "proto3";
+package common;
+option go_package = "elimClient/pbs/common";
+
+
+message SpinReq {
+  int32  GameId = 1;
+  int32  SessionId = 2;
+  int32  Uid = 3;
+  int32  FreeNum = 4 ;// 剩余免费次数
+  int32  ResNum = 5 ;//  剩余Respin次数
+  int64  Raise = 6;
+  int64  Bet = 7 ;
+}
+
+//message SpinRes {
+//  string msg = 1;
+//  int32  Code = 2;
+//  string Data = 3;
+//}
+
+message SpinRes {
+  string msg = 1;
+  int32  Code = 2;
+  netMessage msgData = 3;
+}
+
+
+message SlotTestReq {
+  int32 SID = 1;
+  int32 Bet = 2;
+  int32 Type = 3;
+}
+
+message SlotTestRes {
+  string msg = 1;
+  int32 Code = 2;
+  string Data = 3;
+}
+
+message netMessage {
+  string ServiceId = 1;
+  string UId = 2;
+  bytes content = 3;
+  int32 type = 4;
+  int32 SlotID = 5;
+}
+
+
+service ElimService {
+  rpc SlotTest(SpinReq) returns (SpinRes);
+  rpc SlotSpin(SpinReq) returns (SpinRes);
+
+}

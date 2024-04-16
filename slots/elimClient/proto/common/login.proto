@@ -1,0 +1,88 @@
+syntax = "proto3";
+package common;
+option go_package = "elimClient/pbs/common";
+import "proto/common/common.proto";
+
+// 用户登录请求
+message login_req {
+  req_head head = 1;
+  string username = 2; //账号
+  string password = 3; //密码
+  string phone = 4; //手机号
+  string pkg = 5; //渠道包
+  int32 project_id = 6; //项目id
+  string currency = 7; //货币
+  int32 game_id = 8; //游戏id
+}
+
+//用户登录回复
+message login_ack {
+  ack_head head = 1; //公共头部
+  int32 uid = 2; //用户唯一id
+  string username = 3; //账号
+  string token = 4; //token信息
+  int64 amount = 5; //余额
+  repeated game_info game_list = 6; //大厅列表
+  string currency = 7; //货币
+  int64 amount_limits = 8; //余额限制
+}
+
+//游戏信息
+message game_info {
+  int32 id = 1; //游戏id
+  string name = 2; //游戏名称
+  string icon = 3; //游戏图标
+  string url = 4; //游戏地址
+  int32 status = 5; //游戏状态 1开启 2关闭 3未完成
+  string config = 6; //游戏配置
+  repeated file file_list = 7; //文件列表
+}
+
+message into_game {
+  req_head head = 1;
+  int32 game_id = 2; //游戏id
+  int32 play_type = 3; //玩法类型
+}
+
+//进入游戏回复
+message into_game_ack {
+  ack_head  head = 1;
+  repeated int64 bet = 2; //下注
+
+  game_recover data = 3; //游戏恢复数据
+  bytes spinAck = 4; // spinAck数据
+}
+
+// 用户登出请求(暂未使用)
+message logout_req {
+  req_head head = 1;
+}
+
+//用户登出回复(暂未使用)
+message logout_ack {
+  ack_head head = 1; //公共头部
+}
+
+// 商户用户登录请求
+message merchant_login_req {
+  req_head head = 1;
+  int32 game_id = 2; //游戏id
+}
+
+// 商户用户登录回复
+message merchant_login_ack {
+  ack_head head = 1; //公共头部
+  int32 uid = 2; //用户唯一id
+  string username = 3; //账号
+  string token = 4; //token信息
+  int64 amount = 5; //余额
+  repeated game_info game_list = 6; //大厅列表
+  string currency = 7; //货币
+  int64 amount_limits = 8; //余额限制
+  repeated file file_list = 9; //文件列表
+}
+
+message file {
+  string name = 1; //文件名
+  string path = 2; //文件路径
+}
